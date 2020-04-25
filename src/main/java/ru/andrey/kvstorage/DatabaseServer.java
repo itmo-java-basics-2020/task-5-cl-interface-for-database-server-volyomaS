@@ -22,14 +22,17 @@ public class DatabaseServer {
         if (commandText == null) {
             return DatabaseCommandResult.error("You passed null as command");
         }
+        if (commandText.isEmpty()) {
+            return DatabaseCommandResult.error("You passed empty command");
+        }
 
         String separator = " ";
         String[] terms = commandText.split(separator);
 
         try {
             return DatabaseCommands.valueOf(terms[0])
-                                   .getCommand(environment, Arrays.copyOfRange(terms, 1, terms.length))
-                                   .execute();
+                    .getCommand(environment, Arrays.copyOfRange(terms, 1, terms.length))
+                    .execute();
         } catch (IllegalArgumentException e) {
             return DatabaseCommandResult.error("Illegal command name: " + terms[0]);
         }
